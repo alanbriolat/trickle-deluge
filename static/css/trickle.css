@@ -27,12 +27,17 @@
   -ms-box-sizing: border-box;
   box-sizing: border-box;
 }
+.table .progress {
+  margin-bottom: 0;
+}
 .torrent-row {
   border-top: 1px solid #dddddd;
 }
 .torrent-row [class*="span"] {
   line-height: 30px;
 }
-.torrent-table {
-  font-size: 13px;
+.torrent-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

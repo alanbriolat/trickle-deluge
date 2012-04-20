@@ -1,6 +1,10 @@
 @import "bootstrap/variables.less";
 @import "bootstrap/mixins.less";
 
+.table .progress {
+    margin-bottom: 0;
+}
+
 .torrent-row {
     border-top: 1px solid @tableBorder;
 
@@ -9,6 +13,8 @@
     }
 }
 
-.torrent-table {
-    font-size: @baseFontSize;
+.torrent-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

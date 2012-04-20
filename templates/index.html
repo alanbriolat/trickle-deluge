@@ -2,13 +2,13 @@
 
 {% block content %}
 
-<h1>All torrents</h1>
+<h1>{{title}}</h1>
 
-<div class="row">
+<div class="row{{fluid}}">
   <div class="span12">
     {% for t in torrents %}
     <div class="row-fluid torrent-row">
-      <div class="span6">
+      <div class="span6 torrent-name">
         <a href="torrent/{{t.hash}}">{{t.name}}</a>
       </div>
       <div class="span6">

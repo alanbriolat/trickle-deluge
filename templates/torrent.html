@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>{{title}}</h1>
+
+<div class="row{{fluid}}">
+  <div class="span4">
+    <table class="table table-condensed table-bordered">
+      <tr>
+        <th>Added</th>
+        <td>{{torrent.time_added|format_unix_epoch('%Y/%m/%d @ %H:%M')}}</td>
+      </tr>
+      <tr>
+        <th>State</th>
+        <td>{{torrent.state}}</td>
+      </tr>
+      <tr>
+        <th>Size</th>
+        <td>{{torrent.total_size|filesizeformat}}</td>
+      </tr>
+    </table>
+  </div>
+  <div class="span8">
+    <table class="table table-condensed table-bordered">
+      <tr>
+        <th>Location</th>
+        <td>{{torrent.save_path}}</td>
+      </tr>
+      <tr>
+        <th>Hash</th>
+        <td>{{torrent.hash}}</td>
+      </tr>
+      <tr>
+        <th>Tracker</th>
+        <td>{{torrent.tracker}}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<h2>Files</h2>
+<table class="table table-condensed table-bordered">
+  <thead>
+    <th>Path</th>
+    <th>Size</th>
+    <th>Progress</th>
+  </thead>
+  <tbody>
+    {% for f in torrent.files %}
+    {% set percent = (torrent.file_progress[f.index] * 100)|int %}
+    <tr>
+      <td>{{f.path}}</td>
+      <td>{{f.size|filesizeformat}}</td>
+      <td><div class="progress"><div class="bar" style="width: {{percent}}%;">{{percent}}%</div></div></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+   {{torrent}}
+
+{% endblock %}
