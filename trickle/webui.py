@@ -1,10 +1,18 @@
+from twisted.internet import defer
 from twisted.web.static import File
-from twisted.web.template import Element, XMLFile, renderer
 from klein import Klein
 from deluge.ui.client import client as deluge
+import jinja2
 
 
 app = Klein()
+tpl = jinja2.Environment(loader=jinja2.FileSystemLoader('templates'))
+
+
+SESSION_STATUS_KEYS = [
+        'payload_upload_rate',
+        'payload_download_rate',
+]
 
 
 @app.route('/static/')
@@ -13,25 +21,21 @@ def static(request):
 
 
 @app.route('/')
-def home(request):
-    #return deluge.core.get_torrents_status(filter_dict={}, keys=[]).addCallback(str)
-    return deluge.core.get_torrents_status(filter_dict={}, keys=[]).addCallback(TheWholePage)
+def index(request):
+    torrents = deluge.core.get_torrents_status(filter_dict={}, keys=[])
+    session = deluge.core.get_session_status(keys=SESSION_STATUS_KEYS)
+    d = defer.gatherResults([torrents, session])
+    d.addCallback(show_torrents)
+    return d
 
 
-class TheWholePage(Element):
-    loader = XMLFile('templates/index.html')
-
-    def __init__(self, data):
-        self._data = data
-
-    @renderer
-    def torrents(self, request, tag):
-        for tid, torrent in self._data.iteritems():
-            yield tag.clone().fillSlots(**{
-                'hash': torrent['hash'],
-                'name': torrent['name'],
-                'upload_payload_rate': str(torrent['upload_payload_rate']),
-            })
+def show_torrents(results):
+    torrents, session = results
+    template = tpl.get_template('index.html')
+    return template.render({
+        'torrents': torrents.values(),
+        'session': session,
+    })
 
 
 if __name__ == '__main__':
