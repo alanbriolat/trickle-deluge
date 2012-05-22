@@ -48,24 +48,27 @@
               <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Show <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li class="active"><a href="#">All torrents <span class="pull-right">152</span></a></li>
-                <li><a href="#">Active <span class="pull-right">6</span></a></li>
-                <li><a href="#">Downloading <span class="pull-right">3</span></a></li>
-                <li><a href="#">Seeding <span class="pull-right">118</span></a></li>
-                <li><a href="#">Queued <span class="pull-right">0</span></a></li>
-                <li><a href="#">Paused <span class="pull-right">12</span></a></li>
+                {% for f in filters.state %}
+                <li class="{% if view_state == f[0] %}active{% endif %}"><a href="state/{{f[0]}}">
+                  {{f[0]}} <span class="pull-right">{{f[1]}}</span></a></li>
+                {% endfor %}
                 <li><a href="#">Custom filter...</a></li>
               </ul>
               </li>
               <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sort <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="#">Date added (newest first)</a></li>
-                <li><a href="#">Date added (oldest first)</a></li>
-                <li class="active"><a href="#">Name (ascending)</a></li>
-                <li><a href="#">Name (descending)</a></li>
+                {% for key, desc in available_sorts %}
+                <li class="{% if sort_key == key %}active{% endif %}"><a href="?sort={{key}}">
+                  {{desc.capitalize()}}</a></li>
+                {% endfor %}
               </ul>
               </li>
+              <li class="{% if page == 'trackers' %}active{% endif %}"><a href="trackers/">Trackers</a></li>
+            </ul>
+            <ul class="nav pull-right">
+              <li><a href="#"><i class="icon-arrow-down icon-white"></i> {{session.payload_download_rate|filesizeformat}}/s</a></li>
+              <li><a href="#"><i class="icon-arrow-up icon-white"></i> {{session.payload_upload_rate|filesizeformat}}/s</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -73,6 +76,8 @@
     </div>
 
     <div class="container{{fluid}}">
+
+      {{filters}}
 
       {% block content %}
 

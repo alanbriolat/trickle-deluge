@@ -2,21 +2,55 @@
 
 {% block content %}
 
-<h1>{{title}}</h1>
+<form class="well form-inline" target="" method="GET">
+  <div class="input-prepend">
+    <span class="add-on">State</span>
+    <select name="state" class="span2">
+      {% for s, n in filters.state %}
+      <option value="{{s}}">{{s}} ({{n}})</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="input-prepend">
+    <span class="add-on">Tracker</span>
+    <select name="tracker" class="span2">
+      {% for h, n in filters.tracker_host %}
+      <option value="{{h}}">{{h}} ({{n}})</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="input-prepend">
+    <span class="add-on">Sort by</span>
+    <select name="sort" class="span2">
+      {% for key, desc in available_sorts %}
+      <option value="{{key}}">{{desc}}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <button class="btn btn-primary" type="submit">Apply</button>
+</form>
 
-<div class="row{{fluid}}">
-  <div class="span12">
-    {% for t in torrents %}
-    <div class="row-fluid torrent-row">
-      <div class="span6 torrent-name">
-        <a href="torrent/{{t.hash}}">{{t.name}}</a>
-      </div>
-      <div class="span6">
-        test
-      </div>
+<h1>{{title}}{% if sort_desc %} <small>Sorted by {{sort_desc}}</small>{% endif %}</h1>
+
+{% for t in torrents %}
+{% set percent = (t.total_done/t.total_size)*100 %}
+<div class="torrent-row state-{{t.state.lower()}}" id="torrent-{{t.hash}}">
+  <div class="torrent-progress" style="width: {{percent}}%;">
+  </div>
+  <div class="row-fluid torrent-info">
+    <div class="span6 torrent-name">
+      <a href="torrent/{{t.hash}}">{{t.name}}</a>
     </div>
-    {% endfor %}
+    <div class="span2">
+      <i class="icon-arrow-down"></i>
+      {{t.download_payload_rate|filesizeformat}}/s
+    </div>
+    <div class="span2">
+      <i class="icon-arrow-up"></i>
+      {{t.upload_payload_rate|filesizeformat}}/s
+    </div>
   </div>
 </div>
+{% endfor %}
 
 {% endblock %}

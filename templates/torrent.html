@@ -13,7 +13,7 @@
       </tr>
       <tr>
         <th>State</th>
-        <td>{{torrent.state}}</td>
+        <td><a href="state/{{torrent.state}}">{{torrent.state}}</a></td>
       </tr>
       <tr>
         <th>Size</th>
@@ -45,6 +45,7 @@
     <th>Path</th>
     <th>Size</th>
     <th>Progress</th>
+    <th>Priority</th>
   </thead>
   <tbody>
     {% for f in torrent.files %}
@@ -53,6 +54,7 @@
       <td>{{f.path}}</td>
       <td>{{f.size|filesizeformat}}</td>
       <td><div class="progress"><div class="bar" style="width: {{percent}}%;">{{percent}}%</div></div></td>
+      <td>{{torrent.file_priorities[f.index]|readable_priority}}</td>
     </tr>
     {% endfor %}
   </tbody>

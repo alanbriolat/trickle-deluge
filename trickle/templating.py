@@ -12,6 +12,7 @@ class Environment(jinja2.Environment):
         #self.globals['fluid'] = '-fluid'
 
         self.filters['format_unix_epoch'] = format_unix_epoch
+        self.filters['readable_priority'] = readable_priority
         # TODO: remove this when a new version of Jinja2 is released - this is
         # currently using a copy of the latest code for this filter to work
         # around the fact that in Jinja 2.6 it's completely broken.
@@ -22,6 +23,14 @@ def format_unix_epoch(value, format):
     import datetime
     dt = datetime.datetime.fromtimestamp(value)
     return dt.strftime(format)
+
+
+def readable_priority(value):
+    priorities = ['ignore', 'normal', 'high', 'highest']
+    if value > len(priorities):
+        return '(unknown)'
+    else:
+        return priorities[value]
 
 
 def do_filesizeformat(value, binary=False):

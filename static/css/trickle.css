@@ -31,13 +31,67 @@
   margin-bottom: 0;
 }
 .torrent-row {
-  border-top: 1px solid #dddddd;
+  border: 1px solid;
+  /*border-left-width: 5px;*/
+
+  margin-bottom: 9px;
+  position: relative;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  padding: 5px;
 }
 .torrent-row [class*="span"] {
-  line-height: 30px;
+  /*border: 1px solid @black;*/
+
 }
-.torrent-name {
+.torrent-row .torrent-name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.torrent-row .torrent-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 0;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+.torrent-row .torrent-info {
+  position: relative;
+}
+.torrent-row.state-downloading {
+  border-color: #46a546;
+}
+.torrent-row.state-downloading .torrent-progress {
+  background-color: #dff1df;
+}
+.torrent-row.state-seeding {
+  border-color: #049cdb;
+}
+.torrent-row.state-seeding .torrent-progress {
+  background-color: #e0f5fe;
+}
+.torrent-row.state-paused {
+  border-color: #999999;
+}
+.torrent-row.state-paused .torrent-progress {
+  background-color: #e5e5e5;
+}
+.torrent-row.state-queued {
+  border-color: #99cc99;
+}
+.torrent-row.state-queued .torrent-progress {
+  background-color: #ffffff;
+}
+.thin-progress {
+  height: 3px;
+  background-color: #a9dba9;
+}
+.thin-progress .bar {
+  height: 3px;
+  background-color: #46a546;
 }

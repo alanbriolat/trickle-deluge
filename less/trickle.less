@@ -1,20 +1,71 @@
 @import "bootstrap/variables.less";
 @import "bootstrap/mixins.less";
 
+@downloading:   @green;
+@downloadingBg: lighten(@downloading, 45%);
+@seeding:       @blue;
+@seedingBg:     lighten(@seeding, 50%);
+@paused:        @grayLight;
+@pausedBg:      lighten(@paused, 30%);
+@queued:        #9c9;
+@queuedBg:      lighten(@queued, 40%);
+
+
+.torrent-progress-bar (@border, @bg) {
+    border-color: @border;
+    .torrent-progress {
+        background-color: @bg;
+    }
+}
+
+
 .table .progress {
     margin-bottom: 0;
 }
 
 .torrent-row {
-    border-top: 1px solid @tableBorder;
+    border: 1px solid;
+    /*border-left-width: 5px;*/
+    margin-bottom: @baseLineHeight/2;
+    position: relative;
+    .border-radius(5px);
+    padding: 5px;
 
     [class*="span"] {
-        line-height: 30px;
+        /*border: 1px solid @black;*/
     }
+
+    .torrent-name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .torrent-progress {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        z-index: 0;
+        .border-radius(4px);
+    }
+
+    .torrent-info {
+        position: relative;
+    }
+
+    &.state-downloading { .torrent-progress-bar(@downloading, @downloadingBg); }
+    &.state-seeding { .torrent-progress-bar(@seeding, @seedingBg); }
+    &.state-paused { .torrent-progress-bar(@paused, @pausedBg); }
+    &.state-queued { .torrent-progress-bar(@queued, @queuedBg); }
 }
 
-.torrent-name {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.thin-progress {
+    height: 3px;
+    background-color: lighten(@green, 30%);
+
+    .bar {
+        height: 3px;
+        background-color: @green;
+    }
 }

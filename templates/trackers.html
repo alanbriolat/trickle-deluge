@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Trackers</h1>
+
+<table class="table table-condensed table-bordered">
+  <thead>
+    <tr>
+      <th style="width: 16px;"></th>
+      <th>Host</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for host, n in filters.tracker_host %}
+    <tr>
+      <td><img style="vertical-align: text-bottom; width: 16px; height: 16px;" src="trackericon/{{host}}"/></td>
+      <td><a href="tracker/{{host}}">{{host}}</a></td>
+      <td>{{n}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
