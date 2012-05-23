@@ -16,7 +16,7 @@
     {% for host, n in filters.tracker_host %}
     <tr>
       <td><img style="vertical-align: text-bottom; width: 16px; height: 16px;" src="trackericon/{{host}}"/></td>
-      <td><a href="tracker/{{host}}">{{host}}</a></td>
+      <td><a href="?tracker={{host}}">{{host}}</a></td>
       <td>{{n}}</td>
     </tr>
     {% endfor %}
