@@ -4,24 +4,21 @@
 
 <form class="well form-inline" target="" method="GET">
   <div class="input-prepend">
-    <span class="add-on">State</span>
-    <select name="state" class="span2">
+    <span class="add-on">State</span><select name="state" class="span2">
       {% for s, n in filters.state %}
       <option value="{{s}}">{{s}} ({{n}})</option>
       {% endfor %}
     </select>
   </div>
   <div class="input-prepend">
-    <span class="add-on">Tracker</span>
-    <select name="tracker" class="span2">
+    <span class="add-on">Tracker</span><select name="tracker" class="span2">
       {% for h, n in filters.tracker_host %}
       <option value="{{h}}">{{h}} ({{n}})</option>
       {% endfor %}
     </select>
   </div>
   <div class="input-prepend">
-    <span class="add-on">Sort by</span>
-    <select name="sort" class="span2">
+    <span class="add-on">Sort by</span><select name="sort" class="span2">
       {% for key, desc in available_sorts %}
       <option value="{{key}}">{{desc}}</option>
       {% endfor %}

@@ -49,7 +49,7 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Show <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 {% for f in filters.state %}
-                <li class="{% if view_state == f[0] %}active{% endif %}"><a href="state/{{f[0]}}">
+                <li class="{% if filter_state == f[0] %}active{% endif %}"><a href="?state={{f[0]}}">
                   {{f[0]}} <span class="pull-right">{{f[1]}}</span></a></li>
                 {% endfor %}
                 <li><a href="#">Custom filter...</a></li>
@@ -58,8 +58,8 @@
               <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sort <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                {% for key, desc in available_sorts %}
-                <li class="{% if sort_key == key %}active{% endif %}"><a href="?sort={{key}}">
+                {% for key, desc in sort_methods %}
+                <li class="{% if sort_method == key %}active{% endif %}"><a href="?sort={{key}}">
                   {{desc.capitalize()}}</a></li>
                 {% endfor %}
               </ul>
@@ -76,8 +76,6 @@
     </div>
 
     <div class="container{{fluid}}">
-
-      {{filters}}
 
       {% block content %}
 
