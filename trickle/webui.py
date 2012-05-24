@@ -1,13 +1,12 @@
 from collections import OrderedDict
 
-from twisted.internet import reactor, defer
-from twisted.web import server, resource, static
+from twisted.internet import reactor
 
 from deluge.ui.client import client as deluge
-from deluge.ui.web.server import Tracker
 
 from trickle.templating import Environment
 from trickle.server import Site
+import trickle.client as client
 
 
 tpl = Environment('templates')

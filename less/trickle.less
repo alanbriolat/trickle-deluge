@@ -1,15 +1,33 @@
 @import "bootstrap/variables.less";
 @import "bootstrap/mixins.less";
 
-@downloading:   @green;
-@downloadingBg: lighten(@downloading, 45%);
-@seeding:       @blue;
-@seedingBg:     lighten(@seeding, 50%);
+@downloading:   @successText;
+@downloadingBg: @successBackground;
+@seeding:       @infoText;
+@seedingBg:     @infoBackground;
 @paused:        @grayLight;
 @pausedBg:      lighten(@paused, 30%);
-@queued:        #9c9;
-@queuedBg:      lighten(@queued, 40%);
+@queued:        @paused;
+@queuedBg:      @pausedBg;
+@checking:      @warningText;
+@checkingBg:    @warningBackground;
+@error:         @errorText;
+@errorBg:       @errorBackground;
 
+/* Unbreak spazzy stuff in Twitter Bootstreap */
+.row-fluid [class*="span"] {
+    min-height: 0;
+}
+
+/* Allow stacking span1/span2 side-by-side in mobile view */
+@media (max-width: 767px) {
+    .row, .row-fluid {
+        .span1, .span2 {
+            float: left;
+            width: 50%;
+        }
+    }
+}
 
 .torrent-progress-bar (@border, @bg) {
     border-color: @border;
@@ -33,9 +51,19 @@
 
     [class*="span"] {
         /*border: 1px solid @black;*/
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    .torrent-name {
+    /*
+    .info-pair > div {
+        width: 50%;
+        float: left;
+    }
+    */
+
+    .info-name {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -58,6 +86,8 @@
     &.state-seeding { .torrent-progress-bar(@seeding, @seedingBg); }
     &.state-paused { .torrent-progress-bar(@paused, @pausedBg); }
     &.state-queued { .torrent-progress-bar(@queued, @queuedBg); }
+    &.state-checking { .torrent-progress-bar(@checking, @checkingBg); }
+    &.state-error { .torrent-progress-bar(@error, @errorBg); }
 }
 
 .thin-progress {

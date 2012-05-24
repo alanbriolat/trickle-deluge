@@ -35,8 +35,7 @@ def create_context(extra={}):
     """Create a default context, updated with *extra*.
     """
     context = {
-            'sort_methods': [(k, f['description'])
-                             for k, f in SORT_FUNCTIONS.iteritems()],
+            'sort_methods': SORT_FUNCTIONS,
     }
     context.update(extra)
     return context

@@ -6,46 +6,65 @@
   <div class="input-prepend">
     <span class="add-on">State</span><select name="state" class="span2">
       {% for s, n in filters.state %}
-      <option value="{{s}}">{{s}} ({{n}})</option>
+      <option value="{{s}}"{% if filter_state == s %} selected="selected"{% endif %}>{{s}} ({{n}})</option>
       {% endfor %}
     </select>
   </div>
   <div class="input-prepend">
     <span class="add-on">Tracker</span><select name="tracker" class="span2">
       {% for h, n in filters.tracker_host %}
-      <option value="{{h}}">{{h}} ({{n}})</option>
+      <option value="{{h}}"{% if filter_tracker == h %} selected="selected"{% endif %}>{{h}} ({{n}})</option>
       {% endfor %}
     </select>
   </div>
   <div class="input-prepend">
     <span class="add-on">Sort by</span><select name="sort" class="span2">
-      {% for key, desc in available_sorts %}
-      <option value="{{key}}">{{desc}}</option>
+      {% for key, method in sort_methods.iteritems() %}
+      <option value="{{key}}"{% if sort_method == key %} selected="selected"{% endif %}>{{method.description}}</option>
       {% endfor %}
     </select>
   </div>
   <button class="btn btn-primary" type="submit">Apply</button>
 </form>
 
-<h1>{{title}}{% if sort_desc %} <small>Sorted by {{sort_desc}}</small>{% endif %}</h1>
+<h1>{{title}}{% if filter_tracker != 'All' %}, {{filter_tracker}}{% endif %} <small>Sorted by {{sort_methods[sort_method]['description']}}</small></h1>
 
 {% for t in torrents %}
 {% set percent = (t.total_done/t.total_size)*100 %}
-<div class="torrent-row state-{{t.state.lower()}}" id="torrent-{{t.hash}}">
+{% set percent = range(20, 100)|random %}
+{% set state = t.state %}
+{% set state = ['Downloading', 'Seeding', 'Paused', 'Queued', 'Checking', 'Error']|random %}
+{% set icon = {
+    'Downloading': 'download-alt',
+    'Seeding': 'ok',
+    'Paused': 'pause',
+    'Queued': 'time',
+    'Checking': 'refresh',
+    'Error': 'warning-sign',
+}[state] %}
+<div class="torrent-row state-{{state.lower()}}" id="torrent-{{t.hash}}" data-toggle"collapse" data-target="#torrent-extra-{{t.hash}}">
   <div class="torrent-progress" style="width: {{percent}}%;">
   </div>
   <div class="row-fluid torrent-info">
-    <div class="span6 torrent-name">
+    <div class="span4 info-name">
       <a href="torrent/{{t.hash}}">{{t.name}}</a>
     </div>
-    <div class="span2">
-      <i class="icon-arrow-down"></i>
-      {{t.download_payload_rate|filesizeformat}}/s
+    <div class="span3"><i class="icon-{{icon}}"></i>
+      {% if state == 'Downloading' %}
+      {{percent}}% done, {{t.download_payload_rate|filesizeformat}}/s, eta: {{t.eta}}
+      {% elif state == 'Seeding' %}
+      seeding at {{t.upload_payload_rate|filesizeformat}}/s, ratio: {{t.ratio|round(2)}}
+      {% elif state == 'Paused' %}
+      {{percent}}% done, paused
+      {% elif state == 'Queued' %}
+      queued at #{{t.queue}}
+      {% elif state == 'Checking' %}
+      {{percent}}% checked
+      {% elif state == 'Error' %}
+      error
+      {% endif %}
     </div>
-    <div class="span2">
-      <i class="icon-arrow-up"></i>
-      {{t.upload_payload_rate|filesizeformat}}/s
-    </div>
+    <div class="span1"><i class="icon-hdd"></i>&nbsp;{{t.total_size|filesizeformat}}</div>
   </div>
 </div>
 {% endfor %}
